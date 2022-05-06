@@ -121,9 +121,8 @@ async def choose_feature(message: types.Message, state: FSMContext):
         if len(message.text) == 6:
             await send_id_card(message, state)
     else:
-        match message.text:
-            case "Search🔎":
-                await send_search_menu(message)
+        if message.text == "Search🔎":
+            await send_search_menu(message)
 
 
 def register_user(dp: Dispatcher):
