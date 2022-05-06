@@ -1,6 +1,6 @@
 from aiogram import Dispatcher
 from aiogram import types
-from tgbot_template.tgbot.services import hentai_lib
+from tgbot.services import hentai_lib
 from aiogram.types.inline_query_result import InlineQueryResultArticle
 
 

@@ -4,11 +4,11 @@ import aiogram.utils.exceptions
 from aiogram import Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram import types
-from tgbot_template.tgbot.services import hentai_lib
-from tgbot_template.tgbot.misc.states import SearchByID
-from tgbot_template.tgbot.keyboards import reply
+from tgbot.services import hentai_lib
+from tgbot.misc.states import SearchByID
+from tgbot.keyboards import reply
 from aiogram.utils.markdown import hlink
-from tgbot_template.tgbot.keyboards import inline
+from tgbot.keyboards import inline
 
 
 # Start communication with user
@@ -70,7 +70,7 @@ async def send_random_card(callback: types.CallbackQuery, state: FSMContext):
                                 f'{title}\nCategories: {", ".join(categories)}\nTags: {", ".join(tags)}\n'
                                 f'Languages: {", ".join(languages)}'
                                 f'\nPages: {pages}',
-                                reply_markup=inline.get_inline_card_keyboard(response["url"], response["id"]))
+                                        reply_markup=inline.get_inline_card_keyboard(response["url"], response["id"]))
     await SearchByID.waiting_for_action.set()
     await state.set_data({"id": response["id"]})
 

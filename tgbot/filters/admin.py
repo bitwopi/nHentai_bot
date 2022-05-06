@@ -2,7 +2,7 @@ import typing
 
 from aiogram.dispatcher.filters import BoundFilter
 
-from tgbot_template.tgbot.config import Config
+from tgbot.config import Config
 
 
 class AdminFilter(BoundFilter):
