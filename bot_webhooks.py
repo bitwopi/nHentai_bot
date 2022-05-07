@@ -66,7 +66,7 @@ async def on_shutdown(dispatcher):
     await bot.session.close()
 
 
-async def main():
+def main():
     logging.basicConfig(level=logging.INFO)
 
     bot['config'] = config
@@ -83,6 +83,6 @@ async def main():
 
 if __name__ == '__main__':
     try:
-        asyncio.run(main())
+        main()
     except (KeyboardInterrupt, SystemExit):
         logger.error("Bot stopped!")
