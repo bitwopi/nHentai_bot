@@ -21,7 +21,8 @@ async def user_start(message: types.Message):
 # Help command
 async def user_help(message: types.Message):
     text = "\n/search - search doujinshi"
-    await message.answer(text)
+    with open("tgbot/guide_gif/1.mp4", "rb") as f1:
+        await message.answer_video(f1, caption=text)
 
 
 # Sending info-card by doujin id
