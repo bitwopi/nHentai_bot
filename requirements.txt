@@ -1,5 +1,4 @@
 aiogram~=2.18
 aioredis~=2.0
 NHentai-API
-img2pdf
 environs~=9.0

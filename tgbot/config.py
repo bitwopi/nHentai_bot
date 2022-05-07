@@ -24,10 +24,16 @@ class Miscellaneous:
 
 
 @dataclass
+class Heroku:
+    app_name: str = None
+
+
+@dataclass
 class Config:
     tg_bot: TgBot
     db: DbConfig
     misc: Miscellaneous
+    heroku: Heroku
 
 
 def load_config(path: str = None):
@@ -46,5 +52,8 @@ def load_config(path: str = None):
             user=env.str('DB_USER'),
             database=env.str('DB_NAME')
         ),
-        misc=Miscellaneous()
+        misc=Miscellaneous(),
+        heroku=Heroku(
+            app_name=env.str("HEROKU_APP_NAME")
+        )
     )
