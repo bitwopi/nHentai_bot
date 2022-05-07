@@ -71,7 +71,30 @@ async def send_random_card(callback: types.CallbackQuery, state: FSMContext):
                                 f'{title}\nCategories: {", ".join(categories)}\nTags: {", ".join(tags)}\n'
                                 f'Languages: {", ".join(languages)}'
                                 f'\nPages: {pages}',
-                                        reply_markup=inline.get_inline_card_keyboard(response["url"], response["id"]))
+                                reply_markup=inline.get_inline_random_card_keyboard(response["url"], response["id"]))
+    await SearchByID.waiting_for_action.set()
+    await state.set_data({"id": response["id"]})
+
+
+async def send_next_random_card(callback: types.CallbackQuery, state: FSMContext):
+    response = hentai_lib.get_douijin_random()
+    categories = []
+    tags = []
+    languages = []
+    title = response["title"]["english"]
+    for item in response["categories"]:
+        categories.append(hlink(item["name"], item["url"]))
+    for item in response["tags"]:
+        tags.append(hlink(item["name"], item["url"]))
+    for item in response["languages"]:
+        languages.append(hlink(item["name"], item["url"]))
+    pages = response["total_pages"]
+    media = types.InputMediaPhoto(response["cover"]["src"],
+                                f'{title}\nCategories: {", ".join(categories)}\nTags: {", ".join(tags)}\n'
+                                f'Languages: {", ".join(languages)}'
+                                f'\nPages: {pages}')
+    await callback.message.edit_media(media,
+                                reply_markup=inline.get_inline_random_card_keyboard(response["url"], response["id"]))
     await SearchByID.waiting_for_action.set()
     await state.set_data({"id": response["id"]})
 
@@ -109,7 +132,7 @@ async def send_id_content(callback: types.CallbackQuery, state: FSMContext):
                 await callback.message.answer_media_group(media, allow_sending_without_reply=True)
             except aiogram.utils.exceptions.RetryAfter as ex:
                 await asyncio.sleep(ex.timeout)
-            except aiogram.utils.exceptions.BadRequest:
+            except aiogram.utils.exceptions.BadRequest or Exception:
                 await callback.message.answer("Sorry, I can't do that, because of telegram restrictions")
     finally:
         await callback.message.answer("Use me more, my Dear😍", reply_markup=reply.get_home_reply_keyboard())
@@ -134,4 +157,6 @@ def register_user(dp: Dispatcher):
     dp.register_message_handler(send_id_card, state="*")
     dp.register_callback_query_handler(send_random_card, lambda cb: cb.data == "random", state="*")
     dp.register_callback_query_handler(send_id_content, lambda cb: cb.data == "images",
+                                       state="SearchByID:waiting_for_action")
+    dp.register_callback_query_handler(send_next_random_card, lambda cb: cb.data == "next",
                                        state="SearchByID:waiting_for_action")

@@ -23,3 +23,16 @@ def get_inline_card_keyboard(url: str, d_id: int):
     for button in buttons:
         inline_markup.insert(button)
     return inline_markup
+
+
+def get_inline_random_card_keyboard(url: str, d_id: int):
+    inline_markup = InlineKeyboardMarkup(row_width=2)
+    buttons = [
+        InlineKeyboardButton("Get images📸", callback_data="images"),
+        InlineKeyboardButton("Download PDF", url="https://hiken.xyz/g/"+str(d_id)),
+        InlineKeyboardButton("Read Online", url=url),
+        InlineKeyboardButton("Next >>", callback_data="next"),
+    ]
+    for button in buttons:
+        inline_markup.insert(button)
+    return inline_markup
