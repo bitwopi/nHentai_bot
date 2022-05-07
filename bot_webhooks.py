@@ -52,9 +52,9 @@ async def set_bot_commands(bot: Bot):
 
 
 async def on_startup(dispatcher):
-    register_all_middlewares(dp)
-    register_all_filters(dp)
-    register_all_handlers(dp)
+    register_all_middlewares(dispatcher)
+    register_all_filters(dispatcher)
+    register_all_handlers(dispatcher)
     await set_bot_commands(bot)
     await bot.set_webhook(WEBHOOK_URL, drop_pending_updates=True)
 
