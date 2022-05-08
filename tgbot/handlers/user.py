@@ -135,7 +135,8 @@ async def send_id_content(callback: types.CallbackQuery, state: FSMContext):
                 media.attach_photo(images[i]["src"])
                 counter += 1
             try:
-                await callback.message.answer_media_group(media, allow_sending_without_reply=True)
+                if len(media.media) > 0:
+                    await callback.message.answer_media_group(media, allow_sending_without_reply=True)
             except aiogram.utils.exceptions.RetryAfter as ex:
                 await asyncio.sleep(ex.timeout)
             except aiogram.utils.exceptions.BadRequest or Exception:
