@@ -74,7 +74,8 @@ async def send_random_card(callback: types.CallbackQuery, state: FSMContext):
         languages.append(hlink(item["name"], item["url"]))
     pages = response["total_pages"]
     await callback.message.answer_photo(response["cover"]["src"],
-                                f'{title}\nCategories: {", ".join(categories)}\nTags: {", ".join(tags)}\n'
+                                f'{title}\nID: {response["id"]}'
+                                f'\nCategories: {", ".join(categories)}\nTags: {", ".join(tags)}\n'
                                 f'Languages: {", ".join(languages)}'
                                 f'\nPages: {pages}',
                                 reply_markup=inline.get_inline_random_card_keyboard(response["url"], response["id"]))
@@ -96,7 +97,8 @@ async def send_next_random_card(callback: types.CallbackQuery, state: FSMContext
         languages.append(hlink(item["name"], item["url"]))
     pages = response["total_pages"]
     media = types.InputMediaPhoto(response["cover"]["src"],
-                                f'{title}\nCategories: {", ".join(categories)}\nTags: {", ".join(tags)}\n'
+                                f'{title}\nID: {response["id"]}'
+                                f'\nCategories: {", ".join(categories)}\nTags: {", ".join(tags)}\n'
                                 f'Languages: {", ".join(languages)}'
                                 f'\nPages: {pages}')
     await callback.message.edit_media(media,
