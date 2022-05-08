@@ -1,5 +1,5 @@
-import asyncio
 import logging
+import os
 
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
@@ -29,7 +29,7 @@ WEBHOOK_URL = f'{WEBHOOK_HOST}{WEBHOOK_PATH}'
 
 # webserver settings
 WEBAPP_HOST = '0.0.0.0'
-WEBAPP_PORT = 8000
+WEBAPP_PORT = os.getenv('PORT', default=8000)
 
 
 def register_all_middlewares(dp):
