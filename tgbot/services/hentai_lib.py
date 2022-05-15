@@ -1,19 +1,18 @@
 #import json
 import logging
 import os
+"""
+from NHentai_API import NHentai_API
+from NHentai_API.entities.doujin import Doujin
+from NHentai_API.entities.options import Sort
+from NHentai_API.entities.page import SearchPage, PopularPage
+"""
+from API.NHentai_API import NHentai
+from API.NHentai_API.entities.doujin import Doujin
+from API.NHentai_API.entities.options import Sort
+from API.NHentai_API.entities.page import SearchPage, PopularPage
 
-#import requests
-"""
-from NHentai import NHentai
-from NHentai.entities.doujin import Doujin
-from NHentai.entities.options import Sort
-from NHentai.entities.page import SearchPage, PopularPage
-"""
-from API.NHentai import NHentai
-from API.NHentai.entities.doujin import Doujin
-from API.NHentai.entities.options import Sort
-from API.NHentai.entities.page import SearchPage, PopularPage
-#import img2pdf
+
 logger = logging.getLogger("hentai_lib")
 logging.basicConfig(
         level=logging.INFO,
