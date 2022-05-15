@@ -3,10 +3,16 @@ import logging
 import os
 
 #import requests
+"""
 from NHentai import NHentai
 from NHentai.entities.doujin import Doujin
 from NHentai.entities.options import Sort
 from NHentai.entities.page import SearchPage, PopularPage
+"""
+from API.NHentai import NHentai
+from API.NHentai.entities.doujin import Doujin
+from API.NHentai.entities.options import Sort
+from API.NHentai.entities.page import SearchPage, PopularPage
 #import img2pdf
 logger = logging.getLogger("hentai_lib")
 logging.basicConfig(

@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/tgbot/services/API" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/tgbot/services/NHentai-API" vcs="Git" />
   </component>
 </project>
