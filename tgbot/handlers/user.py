@@ -41,22 +41,25 @@ async def send_id_card(message: types.Message, state: FSMContext):
     categories = []
     tags = []
     languages = []
-    response = hentai_lib.get_doujin_by_id(message.text)
-    title = response["title"]["english"]
-    for item in response["categories"]:
-        categories.append(hlink(item["name"], item["url"]))
-    for item in response["tags"]:
-        tags.append(hlink(item["name"], item["url"]))
-    for item in response["languages"]:
-        languages.append(hlink(item["name"], item["url"]))
-    pages = response["total_pages"]
-    await message.answer_photo(response["cover"]["src"],
-                               f'{title}\nCategories: {", ".join(categories)}\nTags: {", ".join(tags)}\n'
-                               f'Languages: {", ".join(languages)}'
-                               f'\nPages: {pages}',
-                               reply_markup=inline.get_inline_card_keyboard(response["url"], response["id"]))
-    await SearchByID.waiting_for_action.set()
-    await state.update_data({"id": response["id"]})
+    try:
+        response = hentai_lib.get_doujin_by_id(message.text)
+        title = response["title"]["english"]
+        for item in response["categories"]:
+            categories.append(hlink(item["name"], item["url"]))
+        for item in response["tags"]:
+            tags.append(hlink(item["name"], item["url"]))
+        for item in response["languages"]:
+            languages.append(hlink(item["name"], item["url"]))
+        pages = response["total_pages"]
+        await message.answer_photo(response["cover"]["src"],
+                                   f'{title}\nCategories: {", ".join(categories)}\nTags: {", ".join(tags)}\n'
+                                   f'Languages: {", ".join(languages)}'
+                                   f'\nPages: {pages}',
+                                   reply_markup=inline.get_inline_card_keyboard(response["url"], response["id"]))
+        await SearchByID.waiting_for_action.set()
+        await state.update_data({"id": response["id"]})
+    except aiogram.exceptions.BadRequest:
+        await message.answer("Sorry, but telegram don't let me send doujin card(")
 
 
 # Sending info-card of random doujin
@@ -65,22 +68,25 @@ async def send_random_card(callback: types.CallbackQuery, state: FSMContext):
     categories = []
     tags = []
     languages = []
-    title = response["title"]["english"]
-    for item in response["categories"]:
-        categories.append(hlink(item["name"], item["url"]))
-    for item in response["tags"]:
-        tags.append(hlink(item["name"], item["url"]))
-    for item in response["languages"]:
-        languages.append(hlink(item["name"], item["url"]))
-    pages = response["total_pages"]
-    await callback.message.answer_photo(response["cover"]["src"],
-                                f'{title}\nID: {response["id"]}'
-                                f'\nCategories: {", ".join(categories)}\nTags: {", ".join(tags)}\n'
-                                f'Languages: {", ".join(languages)}'
-                                f'\nPages: {pages}',
-                                reply_markup=inline.get_inline_random_card_keyboard(response["url"], response["id"]))
-    await SearchByID.waiting_for_action.set()
-    await state.set_data({"id": response["id"]})
+    try:
+        title = response["title"]["english"]
+        for item in response["categories"]:
+            categories.append(hlink(item["name"], item["url"]))
+        for item in response["tags"]:
+            tags.append(hlink(item["name"], item["url"]))
+        for item in response["languages"]:
+            languages.append(hlink(item["name"], item["url"]))
+        pages = response["total_pages"]
+        await callback.message.answer_photo(response["cover"]["src"],
+                                    f'{title}\nID: {response["id"]}'
+                                    f'\nCategories: {", ".join(categories)}\nTags: {", ".join(tags)}\n'
+                                    f'Languages: {", ".join(languages)}'
+                                    f'\nPages: {pages}',
+                                    reply_markup=inline.get_inline_random_card_keyboard(response["url"], response["id"]))
+        await SearchByID.waiting_for_action.set()
+        await state.set_data({"id": response["id"]})
+    except aiogram.exceptions.BadRequest:
+        await callback.message.answer("Sorry, but telegram don't let me send doujin card(")
 
 
 async def send_next_random_card(callback: types.CallbackQuery, state: FSMContext):
