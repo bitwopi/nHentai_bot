@@ -2,15 +2,15 @@
 import logging
 import os
 """
-from NHentai_API import NHentai_API
-from NHentai_API.entities.doujin import Doujin
-from NHentai_API.entities.options import Sort
-from NHentai_API.entities.page import SearchPage, PopularPage
+from tgbot.services.NHentai_API import NHentai
+from tgbot.services.NHentai_API.entities.doujin import Doujin
+from tgbot.services.NHentai_API.entities import Sort
+from tgbot.services.NHentai_API.entities import SearchPage, PopularPage
 """
-from API.NHentai_API import NHentai
-from API.NHentai_API.entities.doujin import Doujin
-from API.NHentai_API.entities.options import Sort
-from API.NHentai_API.entities.page import SearchPage, PopularPage
+from NHentai import NHentai
+from NHentai.entities.doujin import Doujin
+from NHentai.entities.options import Sort
+from NHentai.entities.page import SearchPage, PopularPage
 
 
 logger = logging.getLogger("hentai_lib")

@@ -141,7 +141,7 @@ async def send_id_content(callback: types.CallbackQuery, state: FSMContext):
                     await callback.message.answer_media_group(media, allow_sending_without_reply=True)
             except aiogram.utils.exceptions.RetryAfter as ex:
                 await asyncio.sleep(ex.timeout)
-            except aiogram.utils.exceptions.BadRequest or Exception:
+            except aiogram.utils.exceptions.BadRequest:
                 await callback.message.answer("Sorry, I can't do that, because of telegram restrictions")
     finally:
         await callback.message.answer("Use me more, my Dear😍", reply_markup=reply.get_home_reply_keyboard())
