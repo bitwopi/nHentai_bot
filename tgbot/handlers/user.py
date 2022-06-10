@@ -11,6 +11,9 @@ from tgbot.keyboards import reply
 from aiogram.utils.markdown import hlink
 from tgbot.keyboards import inline
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
+
 
 # Start communication with user
 async def user_start(message: types.Message):
@@ -60,7 +63,7 @@ async def send_id_card(message: types.Message, state: FSMContext):
         await SearchByID.waiting_for_action.set()
         await state.update_data({"id": response["id"]})
     except aiogram.exceptions.BadRequest:
-        logging.Logger.info("Bad request recieved")
+        logger.info(msg="Bad request received")
         await message.answer("Sorry, but telegram don't let me send doujin card(")
 
 
@@ -88,7 +91,7 @@ async def send_random_card(callback: types.CallbackQuery, state: FSMContext):
         await SearchByID.waiting_for_action.set()
         await state.set_data({"id": response["id"]})
     except aiogram.exceptions.BadRequest as br:
-        logging.Logger.info("Bad request recieved")
+        logger.info(msg="Bad request received")
         await callback.message.answer("Sorry, but telegram don't let me send doujin card(")
 
 
@@ -97,23 +100,28 @@ async def send_next_random_card(callback: types.CallbackQuery, state: FSMContext
     categories = []
     tags = []
     languages = []
-    title = response["title"]["english"]
-    for item in response["categories"]:
-        categories.append(hlink(item["name"], item["url"]))
-    for item in response["tags"]:
-        tags.append(hlink(item["name"], item["url"]))
-    for item in response["languages"]:
-        languages.append(hlink(item["name"], item["url"]))
-    pages = response["total_pages"]
-    media = types.InputMediaPhoto(response["cover"]["src"],
-                                f'{title}\nID: {response["id"]}'
-                                f'\nCategories: {", ".join(categories)}\nTags: {", ".join(tags)}\n'
-                                f'Languages: {", ".join(languages)}'
-                                f'\nPages: {pages}')
-    await callback.message.edit_media(media,
-                                reply_markup=inline.get_inline_random_card_keyboard(response["url"], response["id"]))
-    await SearchByID.waiting_for_action.set()
-    await state.set_data({"id": response["id"]})
+    try:
+        title = response["title"]["english"]
+        for item in response["categories"]:
+            categories.append(hlink(item["name"], item["url"]))
+        for item in response["tags"]:
+            tags.append(hlink(item["name"], item["url"]))
+        for item in response["languages"]:
+            languages.append(hlink(item["name"], item["url"]))
+        pages = response["total_pages"]
+        media = types.InputMediaPhoto(response["cover"]["src"],
+                                    f'{title}\nID: {response["id"]}'
+                                    f'\nCategories: {", ".join(categories)}\nTags: {", ".join(tags)}\n'
+                                    f'Languages: {", ".join(languages)}'
+                                    f'\nPages: {pages}')
+        await callback.message.edit_media(media,
+                                    reply_markup=inline.get_inline_random_card_keyboard(response["url"], response["id"]))
+        await SearchByID.waiting_for_action.set()
+        await state.set_data({"id": response["id"]})
+    except aiogram.exceptions.BadRequest:
+        logger.info(msg="Bad request received")
+        await callback.message.answer("Sorry, but telegram don't let me send doujin card(")
+
 
 
 # Send search menu (inline buttons)
@@ -140,7 +148,7 @@ async def send_id_content(callback: types.CallbackQuery, state: FSMContext):
                         await asyncio.sleep(ex.timeout)
                         continue
                     except aiogram.utils.exceptions.BadRequest:
-                        logging.Logger.info("Bad request recieved")
+                        logger.info(msg="Bad request received")
                         await callback.message.answer("Sorry, I can't do this anymore"
                                                       ", because of telegram restrictions")
                         break
@@ -152,7 +160,7 @@ async def send_id_content(callback: types.CallbackQuery, state: FSMContext):
             except aiogram.utils.exceptions.RetryAfter as ex:
                 await asyncio.sleep(ex.timeout)
             except aiogram.utils.exceptions.BadRequest:
-                logging.Logger.info("Bad request recieved")
+                logger.info(msg="Bad request received")
                 await callback.message.answer("Sorry, I can't do that, because of telegram restrictions")
     finally:
         await callback.message.answer("Use me more, my Dear😍", reply_markup=reply.get_home_reply_keyboard())
