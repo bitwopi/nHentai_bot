@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 import aiogram.utils.exceptions
 from aiogram import Dispatcher
@@ -59,6 +60,7 @@ async def send_id_card(message: types.Message, state: FSMContext):
         await SearchByID.waiting_for_action.set()
         await state.update_data({"id": response["id"]})
     except aiogram.exceptions.BadRequest:
+        logging.Logger.info("Bad request recieved")
         await message.answer("Sorry, but telegram don't let me send doujin card(")
 
 
@@ -85,7 +87,8 @@ async def send_random_card(callback: types.CallbackQuery, state: FSMContext):
                                     reply_markup=inline.get_inline_random_card_keyboard(response["url"], response["id"]))
         await SearchByID.waiting_for_action.set()
         await state.set_data({"id": response["id"]})
-    except aiogram.exceptions.BadRequest:
+    except aiogram.exceptions.BadRequest as br:
+        logging.Logger.info("Bad request recieved")
         await callback.message.answer("Sorry, but telegram don't let me send doujin card(")
 
 
@@ -137,6 +140,7 @@ async def send_id_content(callback: types.CallbackQuery, state: FSMContext):
                         await asyncio.sleep(ex.timeout)
                         continue
                     except aiogram.utils.exceptions.BadRequest:
+                        logging.Logger.info("Bad request recieved")
                         await callback.message.answer("Sorry, I can't do this anymore"
                                                       ", because of telegram restrictions")
                         break
@@ -148,6 +152,7 @@ async def send_id_content(callback: types.CallbackQuery, state: FSMContext):
             except aiogram.utils.exceptions.RetryAfter as ex:
                 await asyncio.sleep(ex.timeout)
             except aiogram.utils.exceptions.BadRequest:
+                logging.Logger.info("Bad request recieved")
                 await callback.message.answer("Sorry, I can't do that, because of telegram restrictions")
     finally:
         await callback.message.answer("Use me more, my Dear😍", reply_markup=reply.get_home_reply_keyboard())
