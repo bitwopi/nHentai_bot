@@ -1,4 +1,4 @@
-aiogram~=2.18
+aiogram~=2.20
 aioredis~=2.0
 NHentai-API
 environs~=9.0
