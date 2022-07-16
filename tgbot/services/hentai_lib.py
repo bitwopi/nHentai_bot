@@ -1,12 +1,6 @@
 #import json
 import logging
 import os
-"""
-from tgbot.services.NHentai_API import NHentai
-from tgbot.services.NHentai_API.entities.doujin import Doujin
-from tgbot.services.NHentai_API.entities import Sort
-from tgbot.services.NHentai_API.entities import SearchPage, PopularPage
-"""
 from NHentai import NHentai
 from NHentai.entities.doujin import Doujin
 from NHentai.entities.options import Sort
@@ -30,13 +24,6 @@ def search_doujin(name: str):
         for i in range(len(temp)):
             result.append(temp[i].to_dict())
             result[i].pop("upload_at")
-        """
-        try:
-            with open("current_doujin.json", 'w', encoding="utf-8") as file:
-                json.dump(result, file, indent=4, ensure_ascii=False)
-        except Exception as ex:
-            print(ex)
-        """
         return result
 
 
@@ -63,29 +50,7 @@ def get_most_popular_list():
     temp = doujins_popular.doujins
     for i in range(len(temp)):
         result.append(temp[i].to_dict())
-    """
-    try:
-        with open("current_doujin.json", 'w', encoding="utf-8") as file:
-            json.dump(result, file, indent=4, ensure_ascii=False)
-    except Exception as ex:
-        print(ex)
-    """
     return result
-
-
-"""
-def doujin2pdf(doujin: dict):
-    images = []
-    try:
-        with open(f'{doujin["id"]}.pdf', "wb") as f:
-            for image in doujin["images"]:
-                response = requests.get(image["src"])
-                images.append(response.content)
-            f.write(img2pdf.convert(images))
-            logger.info("File successfully written")
-    except FileExistsError or FileNotFoundError:
-        logger.info("File write is failed")
-"""
 
 
 def delete_json():
